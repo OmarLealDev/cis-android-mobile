@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/cis_blue"/>
+    <item>
+        <bitmap
+            android:src="@drawable/cis_logo_white_1024"
+            android:gravity="center"/>
+    </item>
+</layer-list>

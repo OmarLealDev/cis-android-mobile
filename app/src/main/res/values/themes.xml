@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tu tema normal -->
+    <style name="Theme.CIS" parent="Theme.Material3.Light.NoActionBar"/>
+
+    <!-- Tema de splash -->
+    <style name="Theme.CIS.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/cis_blue</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/cis_logo_white_1024</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.CIS</item>
+        <!-- Android 13+: branding opcional -->
+        <!-- <item name="windowSplashScreenBrandingImage">@drawable/brand_small</item> -->
+    </style>
+</resources>
