@@ -63,7 +63,7 @@ fun LoginScreen(
             Spacer(Modifier.height(16.dp))
 
             Image(
-                painter = painterResource(R.drawable.cis_logo_white_1024), // usa el nombre real del recurso
+                painter = painterResource(R.drawable.cis_logo_white_1024),
                 contentDescription = "Logo CIS",
                 modifier = Modifier.size(96.dp)
             )
@@ -92,7 +92,7 @@ fun LoginScreen(
                     Spacer(Modifier.height(20.dp))
 
                     OutlinedTextField(
-                        value = s.email,                         // ← ya no vm.uiState.email
+                        value = s.email,
                         onValueChange = vm::onEmailChange,
                         label = { Text("Correo electrónico") },
                         singleLine = true,
@@ -103,7 +103,7 @@ fun LoginScreen(
                     Spacer(Modifier.height(12.dp))
 
                     OutlinedTextField(
-                        value = s.password,                      // ← s.password
+                        value = s.password,
                         onValueChange = vm::onPasswordChange,
                         label = { Text("Contraseña") },
                         singleLine = true,
@@ -134,8 +134,8 @@ fun LoginScreen(
                     Spacer(Modifier.height(20.dp))
 
                     Button(
-                        onClick = { vm.signIn { onLoginSuccess() } },                    // ← llama a tu VM
-                        enabled = !s.isLoading,                  // ← isLoading (no 'loading')
+                        onClick = { vm.signIn { onLoginSuccess() } },
+                        enabled = !s.isLoading,
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(14.dp)
                     ) {

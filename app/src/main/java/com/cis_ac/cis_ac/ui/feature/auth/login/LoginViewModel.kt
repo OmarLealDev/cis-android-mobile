@@ -96,7 +96,7 @@ class LoginViewModel(
                 }
                 is Result.Error -> _uiState.update { it.copy(isLoading = false, error = res.message, triedLogin = true) }
                 Result.Loading   -> _uiState.update { it.copy(isLoading = true) }
-                is Result.UserProfile<*> -> { /* sin uso aquí */ }
+                is Result.UserProfile<*> -> {  }
             }
         }
     }
