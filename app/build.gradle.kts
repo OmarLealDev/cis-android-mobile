@@ -59,22 +59,19 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation("androidx.compose.material:material-icons-extended")
 
-    // --- Firebase (usar SIEMPRE el BoM) ---
-    implementation(platform(libs.firebase.bom))   // <- BoM con versión
-    implementation(libs.firebase.auth)            // sin versión
-    implementation(libs.firebase.firestore)       // sin versión
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.analytics)
-    implementation("com.google.firebase:firebase-messaging-ktx")       // Firebase Cloud Messaging
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
-    // --- Room / Navigation ---
     implementation(libs.androidx.room.ktx)
     implementation("androidx.navigation:navigation-compose:2.8.3")
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.foundation)
 
-    // --- Test ---
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
