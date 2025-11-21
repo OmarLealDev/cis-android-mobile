@@ -27,7 +27,7 @@ fun ProfessionalPatientsRoute(
     vm: ProfessionalPatientsViewModel = viewModel(),
     onBack: () -> Unit,
     onOpenHistory: (String) -> Unit,
-    onMessage: (String) -> Unit
+    onMessage: (patientId: String, patientName: String) -> Unit
 ) {
     val state by vm.ui.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { vm.load() }
@@ -114,7 +114,7 @@ fun ProfessionalPatientsRoute(
                             name = item.fullName,
                             lastVisit = item.lastVisit?.format(fmt) ?: "—",
                             onHistory = { onOpenHistory(item.uid) },
-                            onMessage = { onMessage(item.uid) }
+                            onMessage = { onMessage(item.uid, item.fullName) }
                         )
                     }
 

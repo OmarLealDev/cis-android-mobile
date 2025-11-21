@@ -46,6 +46,22 @@ import com.cis_ac.cis_ac.ui.feature.professional.networks.ProfessionalPostDetail
 
 import com.cis_ac.cis_ac.ui.feature.professional.patients.ProfessionalPatientsRoute
 import com.cis_ac.cis_ac.ui.feature.professional.schedule.ProfessionalScheduleRoute
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+
+fun NavController.popOrGoHome() {
+    val popped = popBackStack()
+    if (!popped) {
+        navigate(Route.Home.path) {
+            popUpTo(graph.findStartDestination().id) {
+                inclusive = false
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -128,7 +144,7 @@ fun AppNav() {
         // Admin: listado de profesionales
         composable(Route.AdminProfessionals.path) {
             ProfessionalsRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onOpenProfile = { uid -> nav.navigate(Route.AdminProfessionalDetail.path(uid)) }
             )
         }
@@ -136,7 +152,7 @@ fun AppNav() {
         // Admin: solicitudes
         composable(Route.AdminRequests.path) {
             RequestsRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onOpenDetail = { uid -> nav.navigate(Route.AdminRequestDetail.path(uid)) }
             )
         }
@@ -149,7 +165,7 @@ fun AppNav() {
             val uid = entry.arguments?.getString("uid") ?: return@composable
             RequestDetailRoute(
                 uid = uid,
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onApproved = { /* opcional */ },
                 onRejected = { /* opcional */ }
             )
@@ -163,7 +179,7 @@ fun AppNav() {
             val uid = entry.arguments?.getString("uid") ?: return@composable
             RequestDetailRoute(
                 uid = uid,
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 showActions = false
             )
         }
@@ -186,7 +202,7 @@ fun AppNav() {
         // Paciente: perfil
         composable(Route.PatientProfile.path) {
             PatientProfileRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onOpenClinicalHistory = { nav.navigate(Route.PatientHistory.path) },
                 onSignedOut = {
                     nav.navigate(Route.Login.path) {
@@ -200,7 +216,7 @@ fun AppNav() {
         // Paciente: historial clínico
         composable(Route.PatientHistory.path) {
             PatientHistoryRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onSave = { /* opcional */ },
                 onOpenSection = { /* opcional */ }
             )
@@ -209,7 +225,7 @@ fun AppNav() {
         // Paciente: listado de profesionales
         composable(Route.PatientProfessionals.path) {
             PatientProfessionalsRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onOpenProfile = { uid -> nav.navigate(Route.PatientProfessionalProfile.path(uid)) },
                 onOpenSchedule = { item: PatientProfessionalItem ->
                     nav.navigate(
@@ -234,7 +250,7 @@ fun AppNav() {
             val uid = entry.arguments?.getString("uid") ?: return@composable
             ProfessionalProfileRoute(
                 uid = uid,
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onChat = { professionalId ->
                     nav.navigate(Route.StartChat.path(professionalId))
                 }
@@ -245,7 +261,7 @@ fun AppNav() {
         composable(Route.PatientAppointments.path) {
             PatientAppointmentsRoute(
                 navController = nav,
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onNewAppointment = { nav.navigate(Route.NewAppointment.path()) },
                 onOpenAppointment = { /* ... */ }
             )
@@ -268,7 +284,7 @@ fun AppNav() {
                 preselectedDisciplineName = dName,
                 preselectedProfessionalId = proId,
                 preselectedProfessionalName = proName,
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onCreatedWithMessage = { msg ->
                     val popped = nav.popBackStack(Route.PatientAppointments.path, inclusive = false)
                     if (popped) {
@@ -289,7 +305,7 @@ fun AppNav() {
         composable(Route.ProfessionalAppointments.path) {
             com.cis_ac.cis_ac.ui.feature.professional.appointments.ProfessionalAppointmentsRoute(
                 navController = nav,
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onOpenDetail = { id -> nav.navigate(Route.ProfessionalAppointmentDetail.path(id)) }
             )
         }
@@ -302,7 +318,7 @@ fun AppNav() {
             val id = entry.arguments?.getString("id") ?: return@composable
             ProfessionalAppointmentDetailRoute(
                 appointmentId = id,
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onUpdated = { _, msg: String ->
                     nav.previousBackStackEntry
                         ?.savedStateHandle
@@ -310,7 +326,7 @@ fun AppNav() {
                     nav.previousBackStackEntry
                         ?.savedStateHandle
                         ?.set("pro_snackbar_refresh", true)
-                    nav.popBackStack()
+                    nav.popOrGoHome()
                 }
             )
         }
@@ -318,7 +334,7 @@ fun AppNav() {
         // Profesional: perfil
         composable(Route.ProfessionalProfile.path) {
             com.cis_ac.cis_ac.ui.feature.professional.profile.ProfessionalProfileRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onSignedOut = {
                     nav.navigate(Route.Login.path) {
                         popUpTo(0)
@@ -331,17 +347,18 @@ fun AppNav() {
         // Profesional: pacientes
         composable(Route.ProfessionalPatients.path) {
             ProfessionalPatientsRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onOpenHistory = { patientUid ->
                     nav.navigate(Route.ProfessionalPatientHistory.path(patientUid))
                 },
-                onMessage = { }
+                onMessage = {patientId, patientName ->
+                    nav.navigate(Route.StartChat.path(patientId)) }
             )
         }
 
         composable(Route.ProfessionalSchedule.path) {
             ProfessionalScheduleRoute(
-                onBack = { nav.popBackStack() }
+                onBack = { nav.popOrGoHome() }
             )
         }
 
@@ -353,7 +370,7 @@ fun AppNav() {
             val patientUid = entry.arguments?.getString("uid") ?: return@composable
             PatientHistoryRouteForPro(
                 patientUid = patientUid,
-                onBack = { nav.popBackStack() }
+                onBack = { nav.popOrGoHome() }
             )
         }
 
@@ -363,7 +380,7 @@ fun AppNav() {
             LaunchedEffect(Unit) { entry.savedStateHandle.remove<String>("pro_networks_snackbar") }
 
             ProfessionalNetworksRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onOpenNewPost = { nav.navigate(Route.ProfessionalNewPost.path) },
                 onOpenDetail = { postId -> nav.navigate(Route.ProfessionalPostDetail.path(postId)) },
                 initialSnackbar = msg
@@ -378,16 +395,16 @@ fun AppNav() {
             val postId = entry.arguments?.getString("postId") ?: return@composable
             ProfessionalPostDetailRoute(
                 postId = postId,
-                onBack = { nav.popBackStack() }
+                onBack = { nav.popOrGoHome() }
             )
         }
 
         // Profesional: nuevo post
         composable(Route.ProfessionalNewPost.path) {
             ProfessionalNewPostRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onPosted = { msg: String ->
-                    nav.popBackStack()
+                    nav.popOrGoHome()
                     nav.currentBackStackEntry
                         ?.savedStateHandle
                         ?.set("pro_networks_snackbar", msg)
@@ -398,7 +415,7 @@ fun AppNav() {
         // Paciente: Redes (feed)
         composable(Route.PatientNetworks.path) {
             PatientNetworksRoute(
-                onBack = { nav.popBackStack() },
+                onBack = { nav.popOrGoHome() },
                 onOpenDetail = { postId -> nav.navigate(Route.PatientPostDetail.path(postId)) }
             )
         }
@@ -411,7 +428,7 @@ fun AppNav() {
             val postId = entry.arguments?.getString("postId") ?: return@composable
             PatientPostDetailRoute(
                 postId = postId,
-                onBack = { nav.popBackStack() }
+                onBack = { nav.popOrGoHome() }
             )
         }
 
@@ -421,7 +438,7 @@ fun AppNav() {
                 onChatClick = { otherUserId, otherUserName ->
                     nav.navigate(Route.Chat.path(otherUserId, otherUserName))
                 },
-                onBackClick = { nav.popBackStack() }
+                onBackClick = { nav.popOrGoHome() }
             )
         }
 
@@ -438,7 +455,7 @@ fun AppNav() {
                         popUpTo(Route.StartChat.path) { inclusive = true }
                     }
                 },
-                onBackClick = { nav.popBackStack() }
+                onBackClick = { nav.popOrGoHome() }
             )
         }
 
@@ -458,7 +475,7 @@ fun AppNav() {
             com.cis_ac.cis_ac.ui.feature.chat.chat.ChatScreen(
                 otherUserId = otherUserId,
                 otherUserName = otherUserName,
-                onBackClick = { nav.popBackStack() }
+                onBackClick = { nav.popOrGoHome() }
             )
         }
     }
